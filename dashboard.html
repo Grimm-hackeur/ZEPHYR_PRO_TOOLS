@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord - Tools Pro</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-tools"></i>
+                <span>ZEPHYR-TOOLS</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Accueil</span>
+            </a>
+            <a href="tools/tiktok.html" class="nav-item">
+                <i class="fab fa-tiktok"></i>
+                <span>TikTok Downloader</span>
+            </a>
+            <a href="tools/pinterest.html" class="nav-item">
+                <i class="fab fa-pinterest"></i>
+                <span>Pinterest</span>
+            </a>
+            <a href="tools/spotify.html" class="nav-item">
+                <i class="fab fa-spotify"></i>
+                <span>Spotify</span>
+            </a>
+            <a href="tools/image.html" class="nav-item">
+                <i class="fas fa-image"></i>
+                <span>Image Tools</span>
+            </a>
+            <a href="tools/texte.html" class="nav-item">
+                <i class="fas fa-text-height"></i>
+                <span>Text Styler</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <span class="username" id="usernameDisplay">Utilisateur</span>
+                    <span class="user-status">En ligne</span>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                Déconnexion
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="top-header">
+            <div class="header-left">
+                <h1>Tableau de Bord</h1>
+                <p>Bienvenue dans votre espace Tools Pro</p>
+            </div>
+            <div class="header-right">
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="toolsUsed">0</span>
+                        <span class="stat-label">Outils utilisés</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="downloadsCount">0</span>
+                        <span class="stat-label">Téléchargements</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Tools Grid -->
+        <div class="dashboard-content">
+            <h2>Mes Outils</h2>
+            <div class="tools-grid">
+                <a href="tools/tiktok.html" class="tool-card">
+                    <div class="tool-icon tiktok-bg">
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <h3>TikTok Downloader</h3>
+                    <p>Téléchargez vidéos sans filigrane</p>
+                    <div class="tool-stats">
+                        <span class="tool-usage">Utilisé 12 fois</span>
+                    </div>
+                </a>
+
+                <a href="tools/pinterest.html" class="tool-card">
+                    <div class="tool-icon pinterest-bg">
+                        <i class="fab fa-pinterest"></i>
+                    </div>
+                    <h3>Pinterest</h3>
+                    <p>Images et vidéos Pinterest</p>
+                    <div class="tool-stats">
+                        <span class="tool-usage">Utilisé 8 fois</span>
+                    </div>
+                </a>
+
+                <a href="tools/spotify.html" class="tool-card">
+                    <div class="tool-icon spotify-bg">
+                        <i class="fab fa-spotify"></i>
+                    </div>
+                    <h3>Spotify</h3>
+                    <p>Téléchargez musique Spotify</p>
+                    <div class="tool-stats">
+                        <span class="tool-usage">Utilisé 15 fois</span>
+                    </div>
+                </a>
+
+                <a href="tools/image.html" class="tool-card">
+                    <div class="tool-icon image-bg">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <h3>Image Tools</h3>
+                    <p>Récupérez des images</p>
+                    <div class="tool-stats">
+                        <span class="tool-usage">Utilisé 20 fois</span>
+                    </div>
+                </a>
+
+                <a href="tools/texte.html" class="tool-card">
+                    <div class="tool-icon text-bg">
+                        <i class="fas fa-text-height"></i>
+                    </div>
+                    <h3>Text Styler</h3>
+                    <p>Personnalisez vos textes</p>
+                    <div class="tool-stats">
+                        <span class="tool-usage">Utilisé 25 fois</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="recent-activity">
+                <h3>Activité Récente</h3>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <i class="fas fa-download activity-icon tiktok"></i>
+                        <div class="activity-details">
+                            <span class="activity-text">Vidéo TikTok téléchargée</span>
+                            <span class="activity-time">Il y a 2 minutes</span>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <i class="fas fa-music activity-icon spotify"></i>
+                        <div class="activity-details">
+                            <span class="activity-text">Musique Spotify convertie</span>
+                            <span class="activity-time">Il y a 1 heure</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

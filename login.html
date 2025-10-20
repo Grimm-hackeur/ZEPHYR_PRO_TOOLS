@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Tools Pro</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <div class="login-header">
+            <a href="index.html" class="back-home">
+                <i class="fas fa-arrow-left"></i>
+                Retour à l'accueil
+            </a>
+            <div class="logo">
+                <i class="fas fa-tools"></i>
+                <span>ZEPHYR-TOOLS</span>
+            </div>
+        </div>
+
+        <div class="login-card">
+            <div class="login-welcome">
+                <h1>Content de vous revoir!</h1>
+                <p>Connectez-vous pour accéder à tous vos outils</p>
+            </div>
+
+            <form class="login-form" id="loginForm">
+                <div class="input-group">
+                    <label for="username">
+                        <i class="fas fa-user"></i>
+                        Nom d'utilisateur
+                    </label>
+                    <input type="text" id="username" name="username" required placeholder="Votre nom d'utilisateur">
+                </div>
+
+                <div class="input-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i>
+                        Mot de passe
+                    </label>
+                    <input type="password" id="password" name="password" required placeholder="Votre mot de passe">
+                </div>
+
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Se connecter
+                </button>
+            </form>
+
+                <!-- Ajoute cette div avant la fermeture du body -->
+<div class="login-footer">
+    <p>Pas de compte ? <a href="register.html">S'inscrire gratuitement</a></p>
+</div>
+
+            <div id="loginMessage" class="message"></div>
+        </div>
+    </div>
+
+<script>
+// Ajoute ce script à la fin
+class FrontendAuth {
+    constructor() {
+        this.users = JSON.parse(localStorage.getItem('toolspro_users') || '[]');
+    }
+
+    login(username, password) {
+        const user = this.users.find(u => 
+            (u.username === username || u.email === username) && 
+            u.password === password
+        );
+        
+        if (user) {
+            user.lastLogin = new Date().toISOString();
+            localStorage.setItem('toolspro_current_user', JSON.stringify(user));
+            localStorage.setItem('toolspro_users', JSON.stringify(this.users));
+            return { success: true, user };
+        }
+        
+        return { success: false, message: 'Identifiants incorrects' };
+    }
+
+    getCurrentUser() {
+        return JSON.parse(localStorage.getItem('toolspro_current_user') || 'null');
+    }
+}
+
+const auth = new FrontendAuth();
+
+// Modifie ton formulaire de connexion existant
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const message = document.getElementById('loginMessage');
+    const btn = this.querySelector('button');
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion...';
+
+    setTimeout(() => {
+        const result = auth.login(username, password);
+        
+        if (result.success) {
+            message.className = 'message success';
+            message.textContent = '✅ Connexion réussie ! Redirection...';
+            message.style.display = 'block';
+            
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1000);
+        } else {
+            message.className = 'message error';
+            message.textContent = '❌ ' + result.message;
+            message.style.display = 'block';
+        }
+        
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Se connecter';
+    }, 1000);
+});
+</script>
+    
+    <script src="js/auth.js"></script>
+</body>
+</html>

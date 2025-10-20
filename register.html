@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - Tools Pro</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+        emailjs.init("_81Zfe_8H9_IF6xOA"); // clé publique
+    </script>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --text: #2d3748;
+            --text-light: #718096;
+            --white: #ffffff;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .register-container { width: 100%; max-width: 400px; }
+        .logo {
+            color: var(--white);
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .register-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .register-welcome { text-align:center; margin-bottom:25px; }
+        .register-welcome h1 { color: var(--text); margin-bottom:8px; font-size:24px; }
+        .register-welcome p { color: var(--text-light); font-size:14px; }
+        .input-group { margin-bottom:20px; }
+        .input-group label {
+            display:block;
+            margin-bottom:6px;
+            color: var(--text);
+            font-weight:500;
+            font-size:14px;
+        }
+        .input-group input {
+            width:100%;
+            padding:12px 15px;
+            border:2px solid #e2e8f0;
+            border-radius:8px;
+            font-size:16px;
+            transition:all 0.3s;
+        }
+        .input-group input:focus { outline:none; border-color:var(--primary); }
+        .register-btn {
+            width:100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            padding:15px;
+            border:none;
+            border-radius:8px;
+            font-size:16px;
+            font-weight:600;
+            cursor:pointer;
+            transition:all 0.3s;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:8px;
+        }
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .login-link { text-align:center; margin-top:20px; padding-top:20px; border-top:1px solid #e2e8f0; }
+        .login-link a { color: var(--primary); text-decoration:none; font-weight:600; }
+        .message { margin-top:15px; padding:12px; border-radius:8px; text-align:center; display:none; }
+        .message.success { background:#c6f6d5; color:#276749; border:1px solid #9ae6b4; }
+        .message.error { background:#fed7d7; color:#9b2c2c; border:1px solid #feb2b2; }
+        .features-preview { background:#f7fafc; padding:20px; border-radius:10px; margin:20px 0; }
+        .features-preview h3 { color: var(--text); margin-bottom:15px; text-align:center; font-size:16px; }
+        .features-list { display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:12px; }
+        .feature-item { display:flex; align-items:center; gap:8px; color: var(--text-light); }
+        .feature-item i { color: var(--primary); }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="logo">
+            <i class="fas fa-tools"></i>
+            <span>Tools Pro</span>
+        </div>
+
+        <div class="register-card">
+            <div class="register-welcome">
+                <h1>Créer votre compte</h1>
+                <p>Rejoignez notre communauté</p>
+            </div>
+
+            <div class="features-preview">
+                <h3>🎁 Inclus gratuitement :</h3>
+                <div class="features-list">
+                    <div class="feature-item"><i class="fas fa-check"></i> TikTok Downloader</div>
+                    <div class="feature-item"><i class="fas fa-check"></i> Spotify Converter</div>
+                    <div class="feature-item"><i class="fas fa-check"></i> Pinterest Tools</div>
+                    <div class="feature-item"><i class="fas fa-check"></i> Text Styler</div>
+                </div>
+            </div>
+
+            <form class="register-form" id="registerForm">
+                <div class="input-group">
+                    <label for="email">Adresse email</label>
+                    <input type="email" id="email" required placeholder="votre@email.com">
+                </div>
+
+                <div class="input-group">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" id="username" required placeholder="Votre pseudo" minlength="3">
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" required placeholder="6 caractères minimum" minlength="6">
+                </div>
+
+                <button type="submit" class="register-btn">
+                    <i class="fas fa-user-plus"></i> Créer mon compte
+                </button>
+            </form>
+
+            <div class="login-link">
+                <p>Déjà un compte ? <a href="login.html">Se connecter</a></p>
+            </div>
+
+            <div id="registerMessage" class="message"></div>
+        </div>
+    </div>
+
+    <script>
+        class FrontendAuth {
+            constructor() {
+                this.users = JSON.parse(localStorage.getItem('toolspro_users') || '[]');
+            }
+
+            register(email, username, password) {
+                if (this.users.find(u => u.email === email || u.username === username)) {
+                    return { success:false, message:'Email ou nom d\'utilisateur déjà utilisé' };
+                }
+
+                const user = {
+                    id: Date.now(),
+                    email,
+                    username,
+                    password, // à hasher si besoin
+                    role: 'user',
+                    createdAt: new Date().toISOString(),
+                    lastLogin: new Date().toISOString()
+                };
+
+                this.users.push(user);
+                localStorage.setItem('toolspro_users', JSON.stringify(this.users));
+                localStorage.setItem('toolspro_current_user', JSON.stringify(user));
+
+                this.sendWelcomeEmail(user);
+
+                return { success:true, message:'Compte créé avec succès ! Redirection...', user };
+            }
+
+            sendWelcomeEmail(user) {
+                const templateParams = { to_email: user.email, username: user.username };
+                emailjs.send('service_ppwiupj', 'template_tx1u8xs', templateParams)
+                    .then(response => {
+                        console.log('📧 Email envoyé à:', user.email, response.status, response.text);
+                    }, error => {
+                        console.error('❌ Échec de l’envoi de l’email:', error);
+                    });
+            }
+
+            login(username, password) {
+                const user = this.users.find(u => (u.username === username || u.email === username) && u.password === password);
+                if (user) {
+                    user.lastLogin = new Date().toISOString();
+                    localStorage.setItem('toolspro_current_user', JSON.stringify(user));
+                    localStorage.setItem('toolspro_users', JSON.stringify(this.users));
+                    return { success:true, user };
+                }
+                return { success:false, message:'Identifiants incorrects' };
+            }
+
+            getCurrentUser() { return JSON.parse(localStorage.getItem('toolspro_current_user') || 'null'); }
+            logout() { localStorage.removeItem('toolspro_current_user'); }
+        }
+
+        const auth = new FrontendAuth();
+
+        document.getElementById('registerForm').addEventListener('submit', function(e){
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('registerMessage');
+            const btn = this.querySelector('button');
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Création...';
+
+            setTimeout(() => {
+                const result = auth.register(email, username, password);
+
+                if(result.success){
+                    message.className = 'message success';
+                    message.textContent = result.message;
+                    message.style.display = 'block';
+
+                    setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+                } else {
+                    message.className = 'message error';
+                    message.textContent = '❌ ' + result.message;
+                    message.style.display = 'block';
+                }
+
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-user-plus"></i> Créer mon compte';
+            }, 1000);
+        });
+
+        document.addEventListener('DOMContentLoaded', function(){
+            const card = document.querySelector('.register-card');
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                card.style.transition = 'all 0.5s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
