@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Tools - Tools Pro</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .upload-area {
+            border: 2px dashed #667eea;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            background: rgba(102, 126, 234, 0.05);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .upload-area i {
+            font-size: 48px;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .image-preview {
+            max-width: 400px;
+            margin: 20px auto;
+            text-align: center;
+        }
+        
+        .image-preview img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .catbox-options {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .option-group {
+            margin: 15px 0;
+        }
+        
+        .option-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .url-display {
+            background: #2d3748;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: monospace;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-tools"></i>
+                <span>Tools Pro</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="../dashboard.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Accueil</span>
+            </a>
+            <a href="tiktok.html" class="nav-item">
+                <i class="fab fa-tiktok"></i>
+                <span>TikTok Downloader</span>
+            </a>
+            <a href="pinterest.html" class="nav-item">
+                <i class="fab fa-pinterest"></i>
+                <span>Pinterest</span>
+            </a>
+            <a href="spotify.html" class="nav-item">
+                <i class="fab fa-spotify"></i>
+                <span>Spotify</span>
+            </a>
+            <a href="image.html" class="nav-item active">
+                <i class="fas fa-image"></i>
+                <span>Image Tools</span>
+            </a>
+            <a href="texte.html" class="nav-item">
+                <i class="fas fa-text-height"></i>
+                <span>Text Styler</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <span class="username" id="usernameDisplay">Utilisateur</span>
+                    <span class="user-status">En ligne</span>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                Déconnexion
+            </button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <header class="top-header">
+            <div class="header-left">
+                <h1>Image Tools</h1>
+                <p>Hébergement et récupération d'images</p>
+            </div>
+            <div class="header-right">
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="imagesProcessed">0</span>
+                        <span class="stat-label">Images traitées</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="imageSuccess">99%</span>
+                        <span class="stat-label">Taux de réussite</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <div class="tool-container">
+                <div class="tool-header">
+                    <div class="tool-info">
+                        <h2><i class="fas fa-image"></i> Image Host & Tools</h2>
+                        <p>Hébergez vos images et récupérez des liens permanents avec Catbox.moe</p>
+                    </div>
+                    <div class="tool-badge">
+                        <span class="badge premium">PREMIUM</span>
+                    </div>
+                </div>
+
+                <div class="tool-content">
+                    <!-- Section Upload d'image -->
+                    <div class="input-section">
+                        <h3>Uploader une image</h3>
+                        <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <h4>Cliquez pour uploader une image</h4>
+                            <p>ou glissez-déposez votre fichier ici</p>
+                            <p class="file-types">PNG, JPG, GIF, WEBP - Max 10MB</p>
+                        </div>
+                        <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="handleFileSelect(event)">
+
+                        <div class="catbox-options">
+                            <h4>Options Catbox.moe</h4>
+                            <div class="option-group">
+                                <label class="option-label">
+                                    <input type="radio" name="uploadType" value="file" checked onchange="toggleUploadType()">
+                                    Upload depuis votre appareil
+                                </label>
+                                <label class="option-label">
+                                    <input type="radio" name="uploadType" value="url" onchange="toggleUploadType()">
+                                    Depuis une URL
+                                </label>
+                            </div>
+                            
+                            <div id="urlInputSection" style="display: none;">
+                                <div class="input-group">
+                                    <label for="imageUrl">
+                                        <i class="fas fa-link"></i>
+                                        URL de l'image
+                                    </label>
+                                    <input type="url" id="imageUrl" 
+                                           placeholder="https://example.com/image.jpg" 
+                                           class="tool-input">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button onclick="uploadToCatbox()" class="tool-btn primary">
+                            <i class="fas fa-upload"></i>
+                            Upload vers Catbox
+                        </button>
+                    </div>
+
+                    <!-- Section Résultat -->
+                    <div class="result-section">
+                        <div id="imageResult" class="result" style="display: none;">
+                            <div class="result-header">
+                                <h4>Résultat de l'upload</h4>
+                                <button onclick="clearImageResult()" class="clear-btn">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="result-content" id="imageResultContent">
+                                <!-- Le contenu sera injecté ici -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section Récupération d'image -->
+                    <div class="input-section" style="margin-top: 40px;">
+                        <h3>Récupérer une image</h3>
+                        <div class="input-group">
+                            <label for="imageHash">
+                                <i class="fas fa-hashtag"></i>
+                                Hash ou URL Catbox
+                            </label>
+                            <input type="text" id="imageHash" 
+                                   placeholder="l3k2j4h5g6f7d8s9a0" 
+                                   class="tool-input">
+                            <div class="input-hint">
+                                <i class="fas fa-info-circle"></i>
+                                Entrez le hash Catbox ou l'URL complète de l'image
+                            </div>
+                        </div>
+
+                        <button onclick="retrieveFromCatbox()" class="tool-btn secondary">
+                            <i class="fas fa-search"></i>
+                            Récupérer l'image
+                        </button>
+                    </div>
+
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-infinity"></i>
+                            <h4>Hébergement Permanent</h4>
+                            <p>Liens qui ne expirent pas</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <h4>Sécurisé</h4>
+                            <p>Uploads privés et sécurisés</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-bolt"></i>
+                            <h4>Rapide</h4>
+                            <p>CDN global pour vitesse max</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-code"></i>
+                            <h4>API Complète</h4>
+                            <p>Intégration développeur</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedFile = null;
+        
+        function toggleUploadType() {
+            const uploadType = document.querySelector('input[name="uploadType"]:checked').value;
+            const urlInputSection = document.getElementById('urlInputSection');
+            const uploadArea = document.getElementById('uploadArea');
+            
+            if (uploadType === 'url') {
+                urlInputSection.style.display = 'block';
+                uploadArea.style.display = 'none';
+            } else {
+                urlInputSection.style.display = 'none';
+                uploadArea.style.display = 'block';
+            }
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                selectedFile = file;
+                const uploadArea = document.getElementById('uploadArea');
+                
+                // Vérifier la taille du fichier
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('Fichier trop volumineux. Maximum 10MB.');
+                    return;
+                }
+                
+                // Afficher l'aperçu
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadArea.innerHTML = `
+                        <i class="fas fa-check-circle" style="color: #10B981;"></i>
+                        <h4>Fichier sélectionné</h4>
+                        <p>${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)</p>
+                        <img src="${e.target.result}" style="max-width: 200px; max-height: 150px; border-radius: 8px; margin-top: 10px;">
+                    `;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function uploadToCatbox() {
+            const uploadType = document.querySelector('input[name="uploadType"]:checked').value;
+            const result = document.getElementById('imageResult');
+            const resultContent = document.getElementById('imageResultContent');
+
+            resultContent.innerHTML = '<div class="loading">Upload en cours...</div>';
+            result.style.display = 'block';
+
+            try {
+                let formData = new FormData();
+                
+                if (uploadType === 'file') {
+                    if (!selectedFile) {
+                        alert('Veuillez sélectionner un fichier');
+                        return;
+                    }
+                    formData.append('fileToUpload', selectedFile);
+                } else {
+                    const imageUrl = document.getElementById('imageUrl').value;
+                    if (!imageUrl) {
+                        alert('Veuillez entrer une URL');
+                        return;
+                    }
+                    formData.append('url', imageUrl);
+                }
+
+                // Utilisation de l'API Catbox.moe
+                const response = await fetch('https://catbox.moe/user/api.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const imageUrl = await response.text();
+
+                if (imageUrl && imageUrl.startsWith('http')) {
+                    resultContent.innerHTML = `
+                        <div class="success-message">
+                            <i class="fas fa-check-circle"></i>
+                            <h4>Upload réussi!</h4>
+                        </div>
+                        <div class="image-preview">
+                            <img src="${imageUrl}" alt="Image uploadée">
+                        </div>
+                        <div class="url-display">
+                            ${imageUrl}
+                        </div>
+                        <div class="download-actions">
+                            <a href="${imageUrl}" class="download-btn primary" target="_blank">
+                                <i class="fas fa-external-link-alt"></i>
+                                Voir l'image
+                            </a>
+                            <button onclick="copyToClipboard('${imageUrl}')" class="download-btn secondary">
+                                <i class="fas fa-copy"></i>
+                                Copier le lien
+                            </button>
+                        </div>
+                    `;
+                    
+                    updateImageStats();
+                    
+                } else {
+                    resultContent.innerHTML = `
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h4>Erreur lors de l'upload</h4>
+                            <p>L'API a retourné une réponse invalide: ${imageUrl}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultContent.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h4>Erreur de connexion</h4>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function retrieveFromCatbox() {
+            const hashInput = document.getElementById('imageHash').value;
+            const result = document.getElementById('imageResult');
+            const resultContent = document.getElementById('imageResultContent');
+
+            if (!hashInput) {
+                alert('Veuillez entrer un hash ou une URL');
+                return;
+            }
+
+            resultContent.innerHTML = '<div class="loading">Récupération en cours...</div>';
+            result.style.display = 'block';
+
+            try {
+                // Extraire le hash de l'URL si nécessaire
+                let hash = hashInput;
+                if (hashInput.includes('catbox.moe')) {
+                    const parts = hashInput.split('/');
+                    hash = parts[parts.length - 1];
+                }
+
+                const imageUrl = `https://files.catbox.moe/${hash}`;
+                
+                // Vérifier si l'image existe
+                const checkResponse = await fetch(imageUrl, { method: 'HEAD' });
+                
+                if (checkResponse.ok) {
+                    resultContent.innerHTML = `
+                        <div class="success-message">
+                            <i class="fas fa-check-circle"></i>
+                            <h4>Image trouvée!</h4>
+                        </div>
+                        <div class="image-preview">
+                            <img src="${imageUrl}" alt="Image récupérée">
+                        </div>
+                        <div class="url-display">
+                            ${imageUrl}
+                        </div>
+                        <div class="download-actions">
+                            <a href="${imageUrl}" class="download-btn primary" target="_blank">
+                                <i class="fas fa-external-link-alt"></i>
+                                Voir l'image
+                            </a>
+                            <button onclick="copyToClipboard('${imageUrl}')" class="download-btn secondary">
+                                <i class="fas fa-copy"></i>
+                                Copier le lien
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    resultContent.innerHTML = `
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h4>Image non trouvée</h4>
+                            <p>Aucune image trouvée avec ce hash: ${hash}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultContent.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h4>Erreur de connexion</h4>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function updateImageStats() {
+            const processed = parseInt(localStorage.getItem('imagesProcessed') || '0') + 1;
+            localStorage.setItem('imagesProcessed', processed.toString());
+            document.getElementById('imagesProcessed').textContent = processed;
+        }
+
+        function clearImageResult() {
+            document.getElementById('imageResult').style.display = 'none';
+        }
+
+        // Glisser-déposer
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadArea = document.getElementById('uploadArea');
+            const processed = localStorage.getItem('imagesProcessed') || '0';
+            document.getElementById('imagesProcessed').textContent = processed;
+
+            // Glisser-déposer
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadArea.style.background = 'rgba(102, 126, 234, 0.2)';
+            });
+
+            uploadArea.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                uploadArea.style.background = 'rgba(102, 126, 234, 0.05)';
+            });
+
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadArea.style.background = 'rgba(102, 126, 234, 0.05)';
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    const event = { target: { files: files } };
+                    handleFileSelect(event);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

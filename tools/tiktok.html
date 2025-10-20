@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Downloader - Tools Pro</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-tools"></i>
+                <span>ZEPHYR</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="../dashboard.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Accueil</span>
+            </a>
+            <a href="tiktok.html" class="nav-item active">
+                <i class="fab fa-tiktok"></i>
+                <span>TikTok Downloader</span>
+            </a>
+            <a href="pinterest.html" class="nav-item">
+                <i class="fab fa-pinterest"></i>
+                <span>Pinterest</span>
+            </a>
+            <a href="spotify.html" class="nav-item">
+                <i class="fab fa-spotify"></i>
+                <span>Spotify</span>
+            </a>
+            <a href="image.html" class="nav-item">
+                <i class="fas fa-image"></i>
+                <span>Image Tools</span>
+            </a>
+            <a href="texte.html" class="nav-item">
+                <i class="fas fa-text-height"></i>
+                <span>Text Styler</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <span class="username" id="usernameDisplay">Utilisateur</span>
+                    <span class="user-status">En ligne</span>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                Déconnexion
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="top-header">
+            <div class="header-left">
+                <h1>TikTok Downloader</h1>
+                <p>Téléchargez vos vidéos TikTok sans filigrane</p>
+            </div>
+            <div class="header-right">
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="tiktokDownloads">0</span>
+                        <span class="stat-label">Téléchargements</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="successRate">98%</span>
+                        <span class="stat-label">Taux de réussite</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <!-- Outil TikTok -->
+            <div class="tool-container">
+                <div class="tool-header">
+                    <div class="tool-info">
+                        <h2><i class="fab fa-tiktok"></i> TikTok Video Downloader</h2>
+                        <p>Collez le lien de la vidéo TikTok et téléchargez-la sans filigrane en haute qualité</p>
+                    </div>
+                    <div class="tool-badge">
+                        <span class="badge premium">PREMIUM</span>
+                    </div>
+                </div>
+
+                <div class="tool-content">
+                    <div class="input-section">
+                        <div class="input-group">
+                            <label for="tiktokUrl">
+                                <i class="fas fa-link"></i>
+                                URL de la vidéo TikTok
+                            </label>
+                            <input type="url" id="tiktokUrl" 
+                                   placeholder="https://www.tiktok.com/@username/video/1234567890" 
+                                   class="tool-input">
+                            <div class="input-hint">
+                                <i class="fas fa-info-circle"></i>
+                                Copiez le lien depuis l'application TikTok en cliquant sur "Partager"
+                            </div>
+                        </div>
+
+                        <button onclick="downloadTikTok()" class="tool-btn primary">
+                            <i class="fas fa-download"></i>
+                            Télécharger la vidéo
+                        </button>
+                    </div>
+
+                    <div class="result-section">
+                        <div id="tiktokResult" class="result" style="display: none;">
+                            <div class="result-header">
+                                <h4>Résultat du téléchargement</h4>
+                                <button onclick="clearResult()" class="clear-btn">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="result-content" id="tiktokResultContent">
+                                <!-- Le contenu sera injecté ici -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-ban"></i>
+                            <h4>Sans Filigrane</h4>
+                            <p>Vidéos propres sans watermark TikTok</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-hd-video"></i>
+                            <h4>Haute Qualité</h4>
+                            <p>Résolution maximale disponible</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-bolt"></i>
+                            <h4>Rapide</h4>
+                            <p>Téléchargement instantané</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-mobile-alt"></i>
+                            <h4>Mobile Friendly</h4>
+                            <p>Compatible avec tous les appareils</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Historique des téléchargements -->
+            <div class="history-section">
+                <h3>Historique des téléchargements</h3>
+                <div class="history-list" id="tiktokHistory">
+                    <!-- L'historique sera chargé ici -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/tools.js"></script>
+    <script>
+        // Fonctions spécifiques à TikTok
+        async function downloadTikTok() {
+            const url = document.getElementById('tiktokUrl').value;
+            const result = document.getElementById('tiktokResult');
+            const resultContent = document.getElementById('tiktokResultContent');
+
+            if (!url) {
+                showToolMessage('Veuillez entrer une URL TikTok', 'error');
+                return;
+            }
+
+            if (!url.includes('tiktok.com')) {
+                showToolMessage('URL TikTok invalide', 'error');
+                return;
+            }
+
+            showToolMessage('Téléchargement en cours...', 'loading');
+            result.style.display = 'block';
+
+            try {
+                const apiUrl = `https://delirius-apiofc.vercel.app/download/tiktok?url=${encodeURIComponent(url)}`;
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                if (data.video) {
+                    resultContent.innerHTML = `
+                        <div class="success-message">
+                            <i class="fas fa-check-circle"></i>
+                            <h4>Vidéo téléchargée avec succès!</h4>
+                        </div>
+                        <div class="video-preview">
+                            <video controls width="100%" style="max-width: 400px; border-radius: 10px;">
+                                <source src="${data.video}" type="video/mp4">
+                                Votre navigateur ne supporte pas la lecture vidéo.
+                            </video>
+                        </div>
+                        <div class="download-actions">
+                            <a href="${data.video}" class="download-btn primary" download="tiktok_video.mp4">
+                                <i class="fas fa-download"></i>
+                                Télécharger la vidéo
+                            </a>
+                            <button onclick="copyToClipboard('${data.video}')" class="download-btn secondary">
+                                <i class="fas fa-copy"></i>
+                                Copier le lien
+                            </button>
+                        </div>
+                    `;
+                    
+                    // Sauvegarder dans l'historique
+                    saveToHistory('TikTok', url, data.video);
+                    updateDownloadStats();
+                    
+                } else {
+                    resultContent.innerHTML = `
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h4>Erreur lors du téléchargement</h4>
+                            <p>Impossible de récupérer la vidéo. Vérifiez l'URL et réessayez.</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultContent.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h4>Erreur de connexion</h4>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function showToolMessage(message, type) {
+            // Implémentation simplifiée pour les messages
+            alert(message);
+        }
+
+        function updateDownloadStats() {
+            const downloads = parseInt(localStorage.getItem('tiktokDownloads') || '0') + 1;
+            localStorage.setItem('tiktokDownloads', downloads.toString());
+            document.getElementById('tiktokDownloads').textContent = downloads;
+        }
+
+        // Charger les statistiques au démarrage
+        document.addEventListener('DOMContentLoaded', function() {
+            const downloads = localStorage.getItem('tiktokDownloads') || '0';
+            document.getElementById('tiktokDownloads').textContent = downloads;
+            loadTikTokHistory();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Downloader - Tools Pro</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .music-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .album-art {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #1DB954, #1ED760);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .track-details {
+            flex: 1;
+        }
+        
+        .track-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .track-artist {
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+        
+        .quality-options {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .quality-btn {
+            padding: 8px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .quality-btn.selected {
+            border-color: #1DB954;
+            background: #1DB954;
+            color: white;
+        }
+        
+        .audio-player {
+            width: 100%;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-tools"></i>
+                <span>ZEPHYR</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="../dashboard.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Accueil</span>
+            </a>
+            <a href="tiktok.html" class="nav-item">
+                <i class="fab fa-tiktok"></i>
+                <span>TikTok Downloader</span>
+            </a>
+            <a href="pinterest.html" class="nav-item">
+                <i class="fab fa-pinterest"></i>
+                <span>Pinterest</span>
+            </a>
+            <a href="spotify.html" class="nav-item active">
+                <i class="fab fa-spotify"></i>
+                <span>Spotify</span>
+            </a>
+            <a href="image.html" class="nav-item">
+                <i class="fas fa-image"></i>
+                <span>Image Tools</span>
+            </a>
+            <a href="texte.html" class="nav-item">
+                <i class="fas fa-text-height"></i>
+                <span>Text Styler</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <span class="username" id="usernameDisplay">Utilisateur</span>
+                    <span class="user-status">En ligne</span>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                Déconnexion
+            </button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <header class="top-header">
+            <div class="header-left">
+                <h1>Spotify Downloader</h1>
+                <p>Téléchargez de la musique depuis Spotify</p>
+            </div>
+            <div class="header-right">
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="spotifyDownloads">0</span>
+                        <span class="stat-label">Musiques</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="spotifySuccess">95%</span>
+                        <span class="stat-label">Taux de réussite</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <div class="tool-container">
+                <div class="tool-header">
+                    <div class="tool-info">
+                        <h2><i class="fab fa-spotify"></i> Spotify Music Downloader</h2>
+                        <p>Convertissez et téléchargez vos musiques Spotify en MP3 haute qualité</p>
+                    </div>
+                    <div class="tool-badge">
+                        <span class="badge premium">PREMIUM</span>
+                    </div>
+                </div>
+
+                <div class="tool-content">
+                    <div class="input-section">
+                        <div class="input-group">
+                            <label for="spotifyUrl">
+                                <i class="fas fa-link"></i>
+                                URL Spotify
+                            </label>
+                            <input type="url" id="spotifyUrl" 
+                                   placeholder="https://open.spotify.com/track/1234567890" 
+                                   class="tool-input">
+                            <div class="input-hint">
+                                <i class="fas fa-info-circle"></i>
+                                Supporte les tracks, albums et playlists Spotify
+                            </div>
+                        </div>
+
+                        <div class="quality-options">
+                            <div class="quality-btn selected" data-quality="320kbps" onclick="selectQuality(this)">
+                                <i class="fas fa-music"></i>
+                                320 kbps
+                            </div>
+                            <div class="quality-btn" data-quality="256kbps" onclick="selectQuality(this)">
+                                <i class="fas fa-compress-alt"></i>
+                                256 kbps
+                            </div>
+                            <div class="quality-btn" data-quality="128kbps" onclick="selectQuality(this)">
+                                <i class="fas fa-file-audio"></i>
+                                128 kbps
+                            </div>
+                        </div>
+
+                        <button onclick="downloadSpotify()" class="tool-btn primary">
+                            <i class="fas fa-download"></i>
+                            Télécharger la musique
+                        </button>
+                    </div>
+
+                    <div class="result-section">
+                        <div id="spotifyResult" class="result" style="display: none;">
+                            <div class="result-header">
+                                <h4>Résultat du téléchargement</h4>
+                                <button onclick="clearResult()" class="clear-btn">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="result-content" id="spotifyResultContent">
+                                <!-- Le contenu sera injecté ici -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-file-audio"></i>
+                            <h4>MP3 Qualité</h4>
+                            <p>Format MP3 haute qualité</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-id-card"></i>
+                            <h4>Métadonnées</h4>
+                            <p>Tags ID3 préservés</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-album"></i>
+                            <h4>Cover Art</h4>
+                            <p>Pochette d'album incluse</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-bolt"></i>
+                            <h4>Conversion Rapide</h4>
+                            <p>Processus optimisé</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedQuality = '320kbps';
+        
+        function selectQuality(element) {
+            document.querySelectorAll('.quality-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedQuality = element.getAttribute('data-quality');
+        }
+
+        async function downloadSpotify() {
+            const url = document.getElementById('spotifyUrl').value;
+            const result = document.getElementById('spotifyResult');
+            const resultContent = document.getElementById('spotifyResultContent');
+
+            if (!url) {
+                alert('Veuillez entrer une URL Spotify');
+                return;
+            }
+
+            if (!url.includes('spotify.com')) {
+                alert('URL Spotify invalide');
+                return;
+            }
+
+            resultContent.innerHTML = '<div class="loading">Conversion en cours...</div>';
+            result.style.display = 'block';
+
+            try {
+                const apiUrl = `https://api.siputzx.my.id/api/d/spotify?url=${encodeURIComponent(url)}`;
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                if (data.url || data.downloadUrl) {
+                    const audioUrl = data.url || data.downloadUrl;
+                    
+                    resultContent.innerHTML = `
+                        <div class="success-message">
+                            <i class="fas fa-check-circle"></i>
+                            <h4>Musique convertie avec succès!</h4>
+                        </div>
+                        <div class="music-info">
+                            <div class="album-art">
+                                <i class="fas fa-music"></i>
+                            </div>
+                            <div class="track-details">
+                                <div class="track-title">${data.title || 'Titre inconnu'}</div>
+                                <div class="track-artist">${data.artist || 'Artiste inconnu'}</div>
+                                <div class="audio-quality">Qualité: ${selectedQuality}</div>
+                            </div>
+                        </div>
+                        <audio controls class="audio-player">
+                            <source src="${audioUrl}" type="audio/mpeg">
+                            Votre navigateur ne supporte pas la lecture audio.
+                        </audio>
+                        <div class="download-actions">
+                            <a href="${audioUrl}" class="download-btn primary" download="${data.title || 'spotify_track'}.mp3">
+                                <i class="fas fa-download"></i>
+                                Télécharger MP3
+                            </a>
+                            <button onclick="copyToClipboard('${audioUrl}')" class="download-btn secondary">
+                                <i class="fas fa-copy"></i>
+                                Copier le lien
+                            </button>
+                        </div>
+                    `;
+                    
+                    updateSpotifyStats();
+                    
+                } else {
+                    resultContent.innerHTML = `
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h4>Erreur lors de la conversion</h4>
+                            <p>Impossible de convertir la musique. Vérifiez l'URL et réessayez.</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultContent.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h4>Erreur de connexion</h4>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function updateSpotifyStats() {
+            const downloads = parseInt(localStorage.getItem('spotifyDownloads') || '0') + 1;
+            localStorage.setItem('spotifyDownloads', downloads.toString());
+            document.getElementById('spotifyDownloads').textContent = downloads;
+        }
+
+        function clearResult() {
+            document.getElementById('spotifyResult').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const downloads = localStorage.getItem('spotifyDownloads') || '0';
+            document.getElementById('spotifyDownloads').textContent = downloads;
+        });
+    </script>
+</body>
+</html>
